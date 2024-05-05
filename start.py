@@ -6,7 +6,7 @@ def main():
     config = ConfigParser()
     config.read("credentials.ini")
 
-    api_key = config['gemini']['api_key']  # Access API key from credentials.ini file
+    api_key = config['gemini']['api_key']
 
     chatbot = ChatBot(api_key=api_key)
     chatbot.start_conversation()
@@ -20,7 +20,7 @@ def main():
             sys.exit("Goodbye")
 
         try:
-            response = chatbot.send_prompt(user_input)
+            response = chatbot.process_question(user_input,"bash")
             print(f"{chatbot.CHATBOT_NAME}: {response}")
 
         except Exception as e:
@@ -29,5 +29,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 

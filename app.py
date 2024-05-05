@@ -2,7 +2,6 @@ import google.generativeai as genai
 
 class GenAIException(Exception):
     pass
-
 class ChatBot:
     CHATBOT_NAME = "Genie"
 
@@ -31,10 +30,27 @@ class ChatBot:
             raise GenAIException(str(e))
 
     def start_conversation(self):
-         self.conversation = self.model.start_chat(history=self._conversation_history)
+        self.conversation = self.model.start_chat(history=self._conversation_history)
 
     def _generation_config(self, temperature):
-         return self.genai.types.GenerationConfig(
+        return self.genai.types.GenerationConfig(
             temperature=temperature
         )
+
+    def evaluate_topic(self, question,topic):
+        prompt = f"Is the following question on {topic}?:\n\n{question}"
+        response = self.send_prompt(prompt)
+        return response
+
+    def process_question(self, question,topic, temperature=0.1):
+        
+        evaluation_response = self.evaluate_topic(question,topic)
+
+        
+        if "yes" in evaluation_response.lower():
+            
+            return self.send_prompt(question, temperature)
+        else:
+    
+            return "Sorry i onyl answer bash specific question."
 
